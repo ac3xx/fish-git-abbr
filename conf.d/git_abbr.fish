@@ -60,7 +60,7 @@ abbr gco 'git checkout'
 abbr gcob 'git checkout -b'
 abbr gcom 'git checkout (git_main_branch)'
 abbr gcod 'git checkout (git_develop_branch)'
-abbr gcof 'git checkout (git_feature_prepend)/'
+abbr gcof 'git checkout (git_feature_branch_prepend)/'
 abbr gcoh 'git checkout hotfix/'
 abbr gcor 'git checkout release/'
 abbr gcos 'git checkout support/'
@@ -75,16 +75,20 @@ abbr gcpc 'git cherry-pick --continue'
 abbr gd 'git diff'
 abbr gdca 'git diff --cached'
 abbr gdcw 'git diff --cached --word-diff'
-abbr gdct 'git diff --staged'
+abbr gds 'git diff --staged'
+abbr gdw 'git diff --word-diff'
 abbr gdt 'git diff-tree --no-commit-id --name-only -r'
-# abbr gdnolock 'git diff ":(exclude)package-lock.json" ":(exclude)*.lock"'
 abbr gdup 'git diff @{upstream}'
-# abbr gdv 'git diff -w $@ | view -'
+
+function gdv
+  git diff -w $argv | view -
+end
 
 abbr gdct 'git describe --tags (git rev-list --tags --max-count=1)'
 
 abbr gf 'git fetch'
 abbr gfa 'git fetch --all --prune'
+abbr gfat 'git fetch --all --tags --prune'
 abbr gfo 'git fetch origin'
 
 # gg
@@ -114,14 +118,15 @@ abbr gke 'gitk --all (git log -g --pretty=%h) &!'
 abbr gfg 'git ls-files | grep'
 
 # gl: git log
-abbr gl 'git log'
+abbr glo 'git log'
+abbr glog 'git log'
+abbr glon 'git log --oneline --decorate'
+abbr glogg 'git log --oneline --decorate --graph'
 abbr gls 'git log --stat'
 abbr glsp 'git log --stat -p'
 abbr glg 'git log --graph'
 abbr glgda 'git log --graph --decorate --all'
 abbr glgm 'git log --graph --max-count=10'
-abbr glo 'git log --oneline --decorate'
-abbr glog 'git log --oneline --decorate --graph'
 abbr gloga 'git log --oneline --decorate --graph --all'
 # abbr glol
 # abbr glols
@@ -131,9 +136,12 @@ abbr gloga 'git log --oneline --decorate --graph --all'
 
 # gm: git merge
 abbr gm 'git merge'
+abbr gma 'git merge --abort'
+abbr gmc 'git merge --continue'
+abbr gms 'git merge --squash'
+abbr gmff 'git merge --ff-only'
 abbr gmom 'git merge origin/(git_main_branch)'
 abbr gmum 'git merge upstream/(git_main_branch)'
-abbr gma 'git merge --abort'
 
 # gmtl: git mergetool
 abbr gmtl 'git mergetool --no-prompt'
@@ -149,16 +157,20 @@ abbr gpt 'git push --tags'
 abbr gptf 'git push --tags --force-with-lease'
 abbr gptf! 'git push --tags --force'
 abbr gpoat 'git push origin --all && git push origin --tags'
-abbr gpoatf! 'git push origin --all --force-with-lease && git push origin --tags --force-with-lease'
+abbr gpoatf 'git push origin --all --force-with-lease && git push origin --tags --force-with-lease'
 abbr gpoatf! 'git push origin --all --force && git push origin --tags --force'
 abbr gpv 'git push -v'
 
-# gpl: git pull
+# gpl: git pull (gl)
+abbr gl 'git pull'
 abbr gpl 'git pull'
+abbr gplr 'git pull --rebase'
 abbr gplo 'git pull origin'
 abbr gplom 'git pull origin (git_main_branch)'
+abbr gploc 'git pull origin (git_current_branch)'
 abbr gplu 'git pull upstream'
 abbr gplum 'git pull upstream (git_main_branch)'
+abbr gpluc 'git pull upstream (git_current_branch)'
 
 # gr: git remote
 abbr gr 'git remote -v'
@@ -206,8 +218,9 @@ abbr grstst 'git restore --staged'
 # grt: git return
 abbr grt 'cd (git rev-parse --show-toplevel || echo .)'
 
-# gs: git status
+# gs(t): git status
 abbr gs 'git status'
+abbr gst 'git status'
 abbr gss 'git status -s'
 abbr gsb 'git status -sb'
 
@@ -215,9 +228,9 @@ abbr gsb 'git status -sb'
 abbr gshow 'git show'
 abbr gshowps 'git show --pretty=short --show-signature'
 
-# gst: git stash
-abbr gst 'git stash'
-abbr gsta 'git stash apply'
+# gsta: git stash
+abbr gsta 'git stash'
+abbr gstaa 'git stash apply'
 abbr gstc 'git stash clear'
 abbr gstd 'git stash drop'
 abbr gstl 'git stash list'
@@ -225,8 +238,10 @@ abbr gstp 'git stash pop'
 abbr gstshow 'git stash show --text'
 abbr gstall 'git stash --all'
 abbr gsts 'git stash save'
+abbr gstu 'git stash --include-untracked'
 
 # gsu: git submodule
+abbr gsi 'git submodule init'
 abbr gsu 'git submodule update'
 
 # gsw: git switch
@@ -240,7 +255,11 @@ abbr gt 'git tag'
 abbr gts 'git tag -s'
 abbr gta 'git tag -a'
 abbr gtas 'git tag -a -s'
-# gtl
+abbr gtv 'git tag | sort -V'
+
+function gtl
+  git tag --sort=-v:refname -n --list "$argv[1]*"
+end
 
 # gwch: git whatchanged
 abbr gwch 'git whatchanged -p --abbrev-commit --pretty=medium'
@@ -267,6 +286,8 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   functions -e git_main_branch
   functions -e git_develop_branch
   functions -e git_feature_branch_prepend
+  functions -e gdv
+  functions -e gtl
 
   abbr -e g
   abbr -e ga
@@ -279,7 +300,7 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gb
   abbr -e gba
   abbr -e gbd
-  abbr -e gbDf
+  abbr -e gbdf
   abbr -e gbD
   abbr -e gbDf
   abbr -e gbnm
@@ -324,12 +345,14 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gd
   abbr -e gdca
   abbr -e gdcw
-  abbr -e gdct
+  abbr -e gds
+  abbr -e gdw
   abbr -e gdt
   abbr -e gdup
   abbr -e gdct
   abbr -e gf
   abbr -e gfa
+  abbr -e gfat
   abbr -e gfo
   abbr -e ghh
   abbr -e gi
@@ -339,36 +362,45 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gke
   abbr -e gfg
   abbr -e gl
+  abbr -e glo
+  abbr -e glog
+  abbr -e glon
+  abbr -e glogg
   abbr -e gls
   abbr -e glsp
   abbr -e glg
   abbr -e glgda
   abbr -e glgm
-  abbr -e glo
-  abbr -e glog
   abbr -e gloga
   abbr -e gm
+  abbr -e gma
+  abbr -e gmc
+  abbr -e gms
+  abbr -e gmff
   abbr -e gmom
   abbr -e gmum
-  abbr -e gma
   abbr -e gmtl
   abbr -e gmtlvim
   abbr -e gp
   abbr -e gpd
   abbr -e gpf
   abbr -e gpf!
+  abbr -e gpsu
   abbr -e gpt
   abbr -e gptf
   abbr -e gptf!
   abbr -e gpoat
-  abbr -e gpoatf!
+  abbr -e gpoatf
   abbr -e gpoatf!
   abbr -e gpv
   abbr -e gpl
+  abbr -e gplr
   abbr -e gplo
   abbr -e gplom
+  abbr -e gploc
   abbr -e gplu
   abbr -e gplum
+  abbr -e gpluc
   abbr -e gr
   abbr -e gra
   abbr -e grau
@@ -404,10 +436,11 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gs
   abbr -e gss
   abbr -e gsb
+  abbr -e gst
   abbr -e gshow
   abbr -e gshowps
-  abbr -e gst
   abbr -e gsta
+  abbr -e gstaa
   abbr -e gstc
   abbr -e gstd
   abbr -e gstl
@@ -415,6 +448,8 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gstshow
   abbr -e gstall
   abbr -e gsts
+  abbr -e gstu
+  abbr -e gsi
   abbr -e gsu
   abbr -e gsw
   abbr -e gswc
@@ -424,6 +459,7 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
   abbr -e gts
   abbr -e gta
   abbr -e gtas
+  abbr -e gtv
   abbr -e gwch
   abbr -e gwt
   abbr -e gwta
