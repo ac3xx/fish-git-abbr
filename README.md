@@ -62,7 +62,7 @@ abbreviation | result
 `gcob` | `git checkout -b`
 `gcom` | `git checkout (git_main_branch)`
 `gcod` | `git checkout (git_develop_branch)`
-`gcof` | `git checkout (git_feature_prepend)/`
+`gcof` | `git checkout (git_feature_branch_prepend)/`
 `gcoh` | `git checkout hotfix/`
 `gcor` | `git checkout release/`
 `gcos` | `git checkout support/`
@@ -74,33 +74,40 @@ abbreviation | result
 `gd` | `git diff`
 `gdca` | `git diff --cached`
 `gdcw` | `git diff --cached --word-diff`
-`gdct` | `git diff --staged`
+`gds` | `git diff --staged`
+`gdw` | `git diff --word-diff`
+`gdv` | `git diff -w $argv \| view -`
 `gdt` | `git diff-tree --no-commit-id --name-only -r`
 `gdup` | `git diff @{upstream}`
 `gdct` | `git describe --tags (git rev-list --tags --max-count=1)`
 `gf` | `git fetch`
 `gfa` | `git fetch --all --prune`
+`gfat` | `git fetch --all --tags --prune`
 `gfo` | `git fetch origin`
 `ghh` | `git help`
 `gi` | `git init`
 `gignore` | `git update-index --assume-unchanged`
-`gignored` | `git ls-files -v | grep "^[[:lower:]]"`
+`gignored` | `git ls-files -v \| grep "^[[:lower:]]"`
 `gk` | `gitk --all --branches &!`
 `gke` | `gitk --all (git log -g --pretty=%h) &!`
-`gfg` | `git ls-files | grep`
-`gl` | `git log`
+`gfg` | `git ls-files \| grep`
+`glo` | `git log`
+`glog` | `git log`
+`glon` | `git log --oneline --decorate`
+`glogg` | `git log --oneline --decorate --graph`
 `gls` | `git log --stat`
 `glsp` | `git log --stat -p`
 `glg` | `git log --graph`
 `glgda` | `git log --graph --decorate --all`
 `glgm` | `git log --graph --max-count=10`
-`glo` | `git log --oneline --decorate`
-`glog` | `git log --oneline --decorate --graph`
 `gloga` | `git log --oneline --decorate --graph --all`
 `gm` | `git merge`
+`gma` | `git merge --abort`
+`gmc` | `git merge --continue`
+`gms` | `git merge --squash`
+`gmff` | `git merge --ff-only`
 `gmom` | `git merge origin/(git_main_branch)`
 `gmum` | `git merge upstream/(git_main_branch)`
-`gma` | `git merge --abort`
 `gmtl` | `git mergetool --no-prompt`
 `gmtlvim` | `git mergetool --no-prompt --tool=vimdiff`
 `gp` | `git push`
@@ -112,14 +119,18 @@ abbreviation | result
 `gptf` | `git push --tags --force-with-lease`
 `gptf!` | `git push --tags --force`
 `gpoat` | `git push origin --all && git push origin --tags`
-`gpoatf!` | `git push origin --all --force-with-lease && git push origin --tags --force-with-lease`
+`gpoatf` | `git push origin --all --force-with-lease && git push origin --tags --force-with-lease`
 `gpoatf!` | `git push origin --all --force && git push origin --tags --force`
 `gpv` | `git push -v`
+`gl` | `git pull`
 `gpl` | `git pull`
+`gplr` | `git pull --rebase`
 `gplo` | `git pull origin`
 `gplom` | `git pull origin (git_main_branch)`
+`gploc` | `git pull origin (git_current_branch)`
 `gplu` | `git pull upstream`
 `gplum` | `git pull upstream (git_main_branch)`
+`gpluc` | `git pull upstream (git_current_branch)`
 `gr` | `git remote -v`
 `gra` | `git remote add`
 `grau` | `git remote add upstream`
@@ -151,14 +162,15 @@ abbreviation | result
 `grst` | `git restore`
 `grsts` | `git restore --source`
 `grstst` | `git restore --staged`
-`grt` | `cd (git rev-parse --show-toplevel || echo .)`
+`grt` | `cd (git rev-parse --show-toplevel \|\| echo .)`
 `gs` | `git status`
+`gst` | `git status`
 `gss` | `git status -s`
 `gsb` | `git status -sb`
 `gshow` | `git show`
 `gshowps` | `git show --pretty=short --show-signature`
-`gst` | `git stash`
-`gsta` | `git stash apply`
+`gsta` | `git stash`
+`gstaa` | `git stash apply`
 `gstc` | `git stash clear`
 `gstd` | `git stash drop`
 `gstl` | `git stash list`
@@ -166,6 +178,8 @@ abbreviation | result
 `gstshow` | `git stash show --text`
 `gstall` | `git stash --all`
 `gsts` | `git stash save`
+`gstu` | `git stash --include-untracked`
+`gsi` | `git submodule init`
 `gsu` | `git submodule update`
 `gsw` | `git switch`
 `gswc` | `git switch -c`
@@ -175,6 +189,8 @@ abbreviation | result
 `gts` | `git tag -s`
 `gta` | `git tag -a`
 `gtas` | `git tag -a -s`
+`gtv` | `git tag \| sort -V`
+`gtl` | `git tag --sort=-v:refname -n --list "$argv[1]*"`
 `gwch` | `git whatchanged -p --abbrev-commit --pretty=medium`
 `gwt` | `git worktree`
 `gwta` | `git worktree add`
